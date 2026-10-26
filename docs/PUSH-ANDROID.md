@@ -1,61 +1,60 @@
 # Push en Android (Cristalia Equipo)
 
-Guía única para **notificaciones locales**, **push remota (FCM)** y **arranque** de la app.
+Guía única para **notificaciones**, **arranque en el teléfono** y **APK**.
 
-## Qué hay en el código
+## Si en el celular «no aparece» o «no corre»
 
-| Función | Dónde |
-|--------|--------|
-| Pantalla Push | `src/screens/NotificacionesPush.jsx` |
-| Handler en primer plano | `src/utils/notificaciones.js` |
-| Notificación al guardar solicitud | `solicitudScreen.jsx` |
-| Project EAS | `app.config.js` → `extra.eas.projectId` y respaldo en `src/constants/easProject.js` |
+| Síntoma | Qué hacer |
+|--------|-----------|
+| No hay icono **Cristalia Equipo** | Instala un APK desde [Builds en Expo](https://expo.dev/accounts/velyevy/projects/cristalia-solicitudes/builds). **Preview** = abre solo; **Development** = push + Metro. |
+| Solo tienes **Expo Go** (morada) | Con `npm start` escanea el QR **dentro de Expo Go**. No verás el icono «Cristalia Equipo» hasta instalar el APK. |
+| Icono sí está pero pantalla en blanco / «Looking for dev server» | En la PC: `npm run start:apk` (túnel) o `npm run start:apk:lan` (misma Wi‑Fi). Luego abre **Cristalia Equipo** otra vez. |
+| Confusión con otra app | Desinstala APKs viejos cuyo package no sea `ec.edu.ejemplo.cristalia.equipo`. |
+| Metro raro | `npm run reset:metro`. **No pulses `s`** en la terminal (cambia Go ↔ dev build). |
 
-## Dos formas de ejecutar la app
+## Dos formas de usar la app
 
-| Objetivo | Comando | App en el teléfono |
-|----------|---------|---------------------|
-| Probar UI rápido | `npm start` | **Expo Go** (app morada) |
-| Push remota FCM | `npm run start:apk` | **Cristalia Equipo** (APK de EAS) |
+| Objetivo | Comando PC | En el teléfono |
+|----------|------------|----------------|
+| Probar UI rápido | `npm start` | **Expo Go** → escanear QR |
+| App con icono propio (sin PC) | (solo build) | APK perfil **preview** |
+| Push remota FCM + desarrollo | `npm run start:apk` | APK perfil **development** + abrir **Cristalia Equipo** |
 
-Con `npm run start:apk` la terminal debe indicar **Using development build**. Abre **Cristalia Equipo** desde el launcher; no uses Expo Go. **No pulses `s`** en Metro (cambia el modo y confunde el QR).
+## Compilar APK (EAS)
 
-Si Metro falla por caché: `npm run reset:metro`.
-
-## Compilar el APK (EAS)
-
-Requisitos: cuenta Expo (`eas login`), `google-services.json` en la raíz (gitignored) y secreto **`GOOGLE_SERVICES_JSON`** en el entorno *development* de EAS (ya configurado si seguiste la práctica).
+Requisitos: `eas login`, `google-services.json` en la raíz (gitignored) y secreto **`GOOGLE_SERVICES_JSON`** en EAS (entorno development).
 
 ```powershell
+# Dev client (Metro + push)
 npm run build:android
+
+# Standalone: abre sin tener Metro encendido
+npm run build:android:preview
 ```
 
-Descarga el APK en [expo.dev → cristalia-solicitudes → Builds](https://expo.dev/accounts/velyevy/projects/cristalia-solicitudes/builds) e instálalo.
+Descarga e instala desde [expo.dev → cristalia-solicitudes → Builds](https://expo.dev/accounts/velyevy/projects/cristalia-solicitudes/builds).
 
-Credenciales FCM V1 (solo si cambias la clave de cuenta de servicio):
+FCM V1 (si cambias la cuenta de servicio):
 
 ```powershell
 npm run fcm:upload
 ```
 
-## Firebase (grupal vs individual)
+## Código relacionado
 
-Un mismo **proyecto Firebase** puede tener varias apps Android; cada una lleva un **`android.package`** distinto.
+| Función | Dónde |
+|--------|--------|
+| Pantalla Push | `src/screens/NotificacionesPush.jsx` |
+| Handler en primer plano | `src/utils/notificaciones.js` |
+| Project EAS | `app.config.js` + `src/constants/easProject.js` |
 
-| App | Package | Proyecto EAS |
-|-----|---------|--------------|
-| **Cristalia Equipo** (este repo) | `ec.edu.ejemplo.cristalia.equipo` | `5547a1cb-1ce3-46fc-a3e6-54a71ba5f117` |
-| **Cristalia** (práctica individual) | `ec.edu.ejemplo.cristalia.solicitudes` | otro `projectId` en su repo |
+## Probar push (development APK)
 
-No mezcles `google-services.json` entre repos.
-
-## Probar push
-
-1. `npm run start:apk` → abre **Cristalia Equipo** en el teléfono (misma Wi‑Fi; `--tunnel` si hace falta).
-2. Login demo: `danna@live.uleam.edu.ec` / `paulina`.
-3. Menú **Push** → **Registrar dispositivo** (permisos).
-4. Token completo en la consola de Metro; en pantalla va enmascarado.
-5. Push remota: [expo.dev/notifications](https://expo.dev/notifications) con ese token (app en segundo plano o cerrada).
+1. `npm run start:apk` en la PC.
+2. Abre **Cristalia Equipo** (no Expo Go).
+3. Login demo: `danna@live.uleam.edu.ec` / `paulina`.
+4. Menú **Push** → **Registrar dispositivo**.
+5. Push remota: [expo.dev/notifications](https://expo.dev/notifications) con el token (app en segundo plano).
 6. Local: guardar una cotización en **Solicitudes**.
 
-No subas a Git: `google-services.json`, JSON de cuenta de servicio FCM ni tokens completos en capturas.
+No subas a Git: `google-services.json`, JSON de cuenta FCM ni tokens en capturas.

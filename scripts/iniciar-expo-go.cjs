@@ -3,7 +3,8 @@ const path = require('path');
 
 const root = path.join(__dirname, '..');
 
-console.log('\nModo Expo Go (npm start). Push remota: npm run start:apk\n');
+console.log('\nModo Expo Go: escanea el QR con la app Expo Go (morada).');
+console.log('Push remota y icono propio: instala APK + npm run start:apk\n');
 
 const extra = process.argv.slice(2);
 const result = spawnSync('npx', ['expo', 'start', '--go', ...extra], {

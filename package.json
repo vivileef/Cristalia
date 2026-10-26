@@ -27,13 +27,16 @@
   "scripts": {
     "start": "node scripts/iniciar-expo-go.cjs",
     "start:expo-go": "node scripts/iniciar-expo-go.cjs",
-    "start:apk": "node scripts/iniciar-apk.cjs",
+    "start:apk": "node scripts/iniciar-apk.cjs --tunnel",
+    "start:apk:lan": "node scripts/iniciar-apk.cjs --lan",
+    "start:apk:tunnel": "node scripts/iniciar-apk.cjs --tunnel",
     "start:dev-client": "node scripts/iniciar-apk.cjs",
     "android": "expo start --go --android",
     "ios": "expo start --go --ios",
     "web": "expo start --web",
     "reset:metro": "node scripts/limpiar-cache-metro.cjs",
     "build:android": "eas build --platform android --profile development",
+    "build:android:preview": "eas build --platform android --profile preview",
     "fcm:upload": "node scripts/upload-fcm-v1-eas.cjs"
   },
   "private": true,
