@@ -1,9 +1,22 @@
 import { saldoPendiente } from '../data/datosGrupo';
 
-export const PERIODO_DEMO = {
-    desde: '2026-10-01',
-    hasta: '2026-10-16',
-};
+/** Fecha local en formato ISO (AAAA-MM-DD) para filtros y reportes. */
+export function fechaIsoLocal(fecha = new Date()) {
+    const y = fecha.getFullYear();
+    const m = String(fecha.getMonth() + 1).padStart(2, '0');
+    const d = String(fecha.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+}
+
+/** Mes en curso hasta hoy: incluye cotizaciones recién guardadas. */
+export function periodoReportePorDefecto(fecha = new Date()) {
+    const y = fecha.getFullYear();
+    const m = String(fecha.getMonth() + 1).padStart(2, '0');
+    return {
+        desde: `${y}-${m}-01`,
+        hasta: fechaIsoLocal(fecha),
+    };
+}
 
 function parseIso(fechaIso) {
     if (!fechaIso) return null;

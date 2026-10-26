@@ -10,15 +10,16 @@ import { estilosComunes } from '../theme/estilosComunes';
 import { fuentes } from '../theme/tipografia';
 import { formatearUsd } from '../data/datosGrupo';
 import {
-    PERIODO_DEMO,
     calcularResumenTrabajos,
     formatearFechaCorta,
     formatearRangoPeriodo,
+    periodoReportePorDefecto,
 } from '../utils/resumenFinanciero';
 
 export default function ReportesScreen({ trabajos }) {
-    const [desdeIso, setDesdeIso] = useState(PERIODO_DEMO.desde);
-    const [hastaIso, setHastaIso] = useState(PERIODO_DEMO.hasta);
+    const periodoInicial = useMemo(() => periodoReportePorDefecto(), []);
+    const [desdeIso, setDesdeIso] = useState(periodoInicial.desde);
+    const [hastaIso, setHastaIso] = useState(periodoInicial.hasta);
     const resumen = useMemo(
         () => calcularResumenTrabajos(trabajos, desdeIso, hastaIso),
         [trabajos, desdeIso, hastaIso],
@@ -48,7 +49,9 @@ export default function ReportesScreen({ trabajos }) {
                         <CampoFecha label="Desde" value={desdeIso} onChangeText={setDesdeIso} />
                         <CampoFecha label="Hasta" value={hastaIso} onChangeText={setHastaIso} />
                     </View>
-                    <Text style={styles.hint}>Formato AAAA-MM-DD · demo: {PERIODO_DEMO.desde} — {PERIODO_DEMO.hasta}</Text>
+                    <Text style={styles.hint}>
+                        Formato AAAA-MM-DD · por defecto: mes en curso ({periodoInicial.desde} — {periodoInicial.hasta})
+                    </Text>
                     <Pressable style={estilosComunes.botonSecundario} onPress={consultar}>
                         <Ionicons name={iconosNav.buscar} size={21} color={colores.marca} />
                         <Text style={estilosComunes.textoBotonSecundario}>Consultar período</Text>

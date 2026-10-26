@@ -35,9 +35,9 @@ import {
 } from './src/data/datosGrupo';
 import { avisosIniciales } from './src/data/datosUsuario';
 import {
-    PERIODO_DEMO,
     calcularResumenTrabajos,
     formatearRangoPeriodo,
+    periodoReportePorDefecto,
 } from './src/utils/resumenFinanciero';
 import { configurarManejadorNotificaciones } from './src/utils/notificaciones';
 import { mostrarAviso } from './src/utils/feedback';
@@ -64,11 +64,12 @@ export default function App() {
     const [retornoTrabajos, setRetornoTrabajos] = useState(RUTAS.TRABAJOS);
     const [retornoPractica, setRetornoPractica] = useState(RUTAS.PERFIL);
 
+    const periodoInicio = useMemo(() => periodoReportePorDefecto(), []);
     const resumenInicio = useMemo(
-        () => calcularResumenTrabajos(trabajos, PERIODO_DEMO.desde, PERIODO_DEMO.hasta),
-        [trabajos],
+        () => calcularResumenTrabajos(trabajos, periodoInicio.desde, periodoInicio.hasta),
+        [trabajos, periodoInicio],
     );
-    const periodoInicioLabel = formatearRangoPeriodo(PERIODO_DEMO.desde, PERIODO_DEMO.hasta);
+    const periodoInicioLabel = formatearRangoPeriodo(periodoInicio.desde, periodoInicio.hasta);
 
     const trabajoSeleccionado = useMemo(
         () => trabajos.find((t) => t.id === trabajoSeleccionadoId) ?? null,
