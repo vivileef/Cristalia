@@ -6,6 +6,9 @@
   "build": {
     "development": {
       "developmentClient": true,
+      "env": {
+        "EAS_BUILD": "true"
+      },
       "distribution": "internal",
       "android": {
         "buildType": "apk"

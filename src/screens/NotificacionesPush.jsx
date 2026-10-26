@@ -13,6 +13,7 @@ import { ContenedorScroll } from '../components/contenedorScroll';
 import { colores } from '../theme/colores';
 import { fuentes } from '../theme/tipografia';
 import { asegurarCanalAndroid } from '../utils/notificaciones';
+import { obtenerEasProjectId } from '../utils/easProjectId';
 
 function enmascararToken(token) {
     if (!token || token.length < 24) return token || '';
@@ -54,11 +55,7 @@ export default function NotificacionesPush({ onVolver, enMenu = false }) {
                 setEstado('Permiso denegado; revisar ajustes del teléfono');
                 return;
             }
-            const projectId =
-                Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
-            if (!projectId) {
-                throw new Error('Falta extra.eas.projectId (ejecuta eas init y fusiona app.config.js)');
-            }
+            const projectId = obtenerEasProjectId();
             const resultado = await Notifications.getExpoPushTokenAsync({ projectId });
             const completo = resultado.data;
             console.log('Expo Push Token (solo pruebas, no publicar):', completo);

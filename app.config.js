@@ -7,6 +7,10 @@ const projectId = '5547a1cb-1ce3-46fc-a3e6-54a71ba5f117';
 const googleServices = path.join(__dirname, 'google-services.json');
 const tieneGoogleServices = fs.existsSync(googleServices);
 
+/** Plugin nativo solo en EAS / Metro con APK; en Expo Go no hace falta. */
+const useDevClientNative =
+    process.env.EAS_BUILD === 'true' || process.env.EXPO_USE_DEV_CLIENT === '1';
+
 module.exports = {
     expo: {
         // Launcher: distinto de la app individual «Cristalia» (cristalia-manta).
@@ -34,7 +38,7 @@ module.exports = {
             favicon: './assets/favicon.png',
         },
         plugins: [
-            'expo-dev-client',
+            ...(useDevClientNative ? ['expo-dev-client'] : []),
             'expo-font',
             [
                 'expo-notifications',
