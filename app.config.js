@@ -24,7 +24,7 @@ module.exports = {
         slug: 'cristalia-solicitudes',
         scheme: 'cristalia-solicitudes',
         owner: 'velyevy',
-        version: '1.0.0',
+        version: '1.0.1',
         orientation: 'portrait',
         icon: './assets/icon.png',
         userInterfaceStyle: 'light',
@@ -33,6 +33,7 @@ module.exports = {
         },
         android: {
             package: 'ec.edu.ejemplo.cristalia.equipo',
+            versionCode: 2,
             permissions: [
                 'android.permission.POST_NOTIFICATIONS',
                 'android.permission.ACCESS_COARSE_LOCATION',
