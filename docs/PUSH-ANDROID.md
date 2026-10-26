@@ -22,7 +22,7 @@ Guía única para **notificaciones**, **arranque en el teléfono** y **APK**.
 
 ## Compilar APK (EAS)
 
-Requisitos: `eas login`, `google-services.json` en la raíz (gitignored) y secreto **`GOOGLE_SERVICES_JSON`** en EAS (entorno development).
+Requisitos: `eas login`, `google-services.json` en la raíz (gitignored) y **`GOOGLE_SERVICES_JSON`** en EAS (`npm run google-services:upload`). Tras cambiar Firebase, vuelve a compilar el APK **development**.
 
 ```powershell
 # Dev client (Metro + push)

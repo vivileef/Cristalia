@@ -37,7 +37,8 @@
     "reset:metro": "node scripts/limpiar-cache-metro.cjs",
     "build:android": "eas build --platform android --profile development",
     "build:android:preview": "eas build --platform android --profile preview",
-    "fcm:upload": "node scripts/upload-fcm-v1-eas.cjs"
+    "fcm:upload": "node scripts/upload-fcm-v1-eas.cjs",
+    "google-services:upload": "node scripts/subir-google-services-eas.cjs"
   },
   "private": true,
   "devDependencies": {

@@ -5,7 +5,9 @@ const path = require('path');
 const projectId = '5547a1cb-1ce3-46fc-a3e6-54a71ba5f117';
 
 const googleServices = path.join(__dirname, 'google-services.json');
-const tieneGoogleServices = fs.existsSync(googleServices);
+/** En EAS el archivo lo inyecta GOOGLE_SERVICES_JSON; no va en git. */
+const tieneGoogleServices =
+    fs.existsSync(googleServices) || process.env.EAS_BUILD === 'true';
 
 /**
  * development → APK con dev client (Metro + push remota).
