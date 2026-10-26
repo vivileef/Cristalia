@@ -10,7 +10,7 @@ const root = path.join(__dirname, '..');
 const file = path.join(root, 'google-services.json');
 
 if (!fs.existsSync(file)) {
-    console.error('Falta google-services.json en la raíz del proyecto.');
+    console.error('Falta google-services.json en la raíz (descárgalo de Firebase).');
     process.exit(1);
 }
 
@@ -22,15 +22,14 @@ for (const environment of entornos) {
         'npx',
         [
             'eas',
-            'env:create',
+            'env:set',
+            environment,
             '--name',
             'GOOGLE_SERVICES_JSON',
             '--type',
             'file',
             '--value',
             './google-services.json',
-            '--environment',
-            environment,
             '--visibility',
             'secret',
             '--force',

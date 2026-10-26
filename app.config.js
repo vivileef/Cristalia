@@ -5,7 +5,9 @@ const path = require('path');
 const projectId = '5547a1cb-1ce3-46fc-a3e6-54a71ba5f117';
 
 const googleServices = path.join(__dirname, 'google-services.json');
-const tieneGoogleServices = fs.existsSync(googleServices);
+/** Local: archivo en raíz. EAS: lo inyecta GOOGLE_SERVICES_JSON en el builder. */
+const usaGoogleServices =
+    fs.existsSync(googleServices) || process.env.EAS_BUILD === 'true';
 
 /**
  * development → APK con dev client (Metro + push remota).
@@ -45,7 +47,7 @@ module.exports = {
                 backgroundImage: './assets/android-icon-background.png',
                 monochromeImage: './assets/android-icon-monochrome.png',
             },
-            ...(tieneGoogleServices ? { googleServicesFile: './google-services.json' } : {}),
+            ...(usaGoogleServices ? { googleServicesFile: './google-services.json' } : {}),
         },
         web: {
             favicon: './assets/favicon.png',
