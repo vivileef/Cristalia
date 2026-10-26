@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-/** Tras `eas init`, Expo escribe el projectId real en app.json o aquí. */
-const projectIdPlaceholder = '';
+/** Proyecto EAS: @velyevy/cristalia-solicitudes */
+const projectId = '5547a1cb-1ce3-46fc-a3e6-54a71ba5f117';
 
 const googleServices = path.join(__dirname, 'google-services.json');
 const tieneGoogleServices = fs.existsSync(googleServices);
@@ -11,6 +11,7 @@ module.exports = {
     expo: {
         name: 'Cristalia Solicitudes',
         slug: 'cristalia-solicitudes',
+        owner: 'velyevy',
         version: '1.0.0',
         orientation: 'portrait',
         icon: './assets/icon.png',
@@ -19,7 +20,7 @@ module.exports = {
             supportsTablet: true,
         },
         android: {
-            package: 'ec.edu.uleam.cristalia.faubla',
+            package: 'ec.edu.ejemplo.cristalia.solicitudes',
             adaptiveIcon: {
                 backgroundColor: '#E6F4FE',
                 foregroundImage: './assets/android-icon-foreground.png',
@@ -44,7 +45,7 @@ module.exports = {
         ],
         extra: {
             eas: {
-                projectId: projectIdPlaceholder,
+                projectId,
             },
         },
     },

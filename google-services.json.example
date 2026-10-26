@@ -1,0 +1,21 @@
+{
+  "project_info": {
+    "project_number": "TU_PROJECT_NUMBER",
+    "project_id": "tu-proyecto-firebase",
+    "storage_bucket": "tu-proyecto.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:XXXX:android:YYYY",
+        "android_client_info": {
+          "package_name": "ec.edu.ejemplo.cristalia.solicitudes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [{ "current_key": "AIza..." }],
+      "services": { "appinvite_service": { "other_platform_oauth_client": [] } }
+    }
+  ],
+  "configuration_version": "1"
+}
