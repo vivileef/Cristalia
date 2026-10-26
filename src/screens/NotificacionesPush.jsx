@@ -40,6 +40,10 @@ export default function NotificacionesPush({ onVolver, enMenu = false }) {
 
     async function registrarDispositivo() {
         try {
+            if (Platform.OS === 'web') {
+                setEstado('Push remota: usa Android (APK Cristalia Equipo), no la versión web');
+                return;
+            }
             await asegurarCanalAndroid();
             if (!Device.isDevice) {
                 setEstado('La prueba push requiere un dispositivo físico');
@@ -69,6 +73,13 @@ export default function NotificacionesPush({ onVolver, enMenu = false }) {
 
     async function probarNotificacionLocal() {
         try {
+            if (Platform.OS === 'web') {
+                Alert.alert(
+                    'Solo móvil',
+                    'La notificación local se prueba en Android (Expo Go o APK), no en el navegador.',
+                );
+                return;
+            }
             await asegurarCanalAndroid();
             await Notifications.scheduleNotificationAsync({
                 content: {
@@ -118,10 +129,14 @@ export default function NotificacionesPush({ onVolver, enMenu = false }) {
                 <Boton texto="Probar notificación local" variante="secundario" onPress={probarNotificacionLocal} />
                 <Text style={styles.ultimo}>Último aviso: {ultimoAviso}</Text>
 
-                {Platform.OS === 'android' ? (
+                {Platform.OS === 'web' ? (
                     <Text style={styles.avisoBuild}>
-                        Push remota en Android: development build (expo-dev-client), google-services.json, credencial
-                        FCM V1 en eas credentials, luego https://expo.dev/notifications
+                        En web no hay token Expo Push (haría falta VAPID). Instala el APK, ejecuta npm run start:apk y
+                        usa la pestaña Push en el teléfono. Ver docs/PUSH-ANDROID.md.
+                    </Text>
+                ) : Platform.OS === 'android' ? (
+                    <Text style={styles.avisoBuild}>
+                        Push remota: APK Cristalia Equipo + npm run start:apk → expo.dev/notifications
                     </Text>
                 ) : null}
             </ContenedorScroll>
