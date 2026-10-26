@@ -13,6 +13,8 @@ import Boton from '../components/Boton';
 import { abrirCamara, abrirGaleria } from '../utils/imagenes';
 import { formatearCoordenadas, formatearPrecision, obtenerUbicacionActual } from '../utils/ubicacion';
 import { notificarSolicitudRegistrada } from '../utils/notificaciones';
+import { claveCliente } from '../utils/clientes';
+import { fechaIsoLocal } from '../utils/resumenFinanciero';
 
 const FILTROS = [
     { clave: 'todos', label: 'Todos' },
@@ -20,7 +22,13 @@ const FILTROS = [
     { clave: 'en_proceso', label: 'En proceso' },
 ];
 
-export default function SolicitudScreen({ trabajos, onAgregarTrabajo, onActualizarTrabajo, onAbrirPractica }) {
+export default function SolicitudScreen({
+    trabajos,
+    clientesGuardados = [],
+    onAgregarTrabajo,
+    onActualizarTrabajo,
+    onAbrirPractica,
+}) {
     const [filtro, setFiltro] = useState('todos');
     const [cliente, setCliente] = useState('');
     const [descripcion, setDescripcion] = useState('');
@@ -71,7 +79,7 @@ export default function SolicitudScreen({ trabajos, onAgregarTrabajo, onActualiz
                 total: r.total,
                 pagado: 0,
                 estado: 'cotizado',
-                fecha: new Date().toISOString().slice(0, 10),
+                fecha: fechaIsoLocal(),
                 ...(fotoReferencia ? { fotoReferencia } : {}),
                 ...(ubicacionSitio ? { ubicacion: ubicacionSitio } : {}),
             });
@@ -124,6 +132,33 @@ export default function SolicitudScreen({ trabajos, onAgregarTrabajo, onActualiz
                         <Text style={styles.formTitulo}>Nueva cotización</Text>
                 <Text style={estilosComunes.etiquetaInput}>Cliente</Text>
                 <TextInput style={estilosComunes.input} value={cliente} onChangeText={setCliente} placeholder="Nombre" />
+                {clientesGuardados.length > 0 ? (
+                    <View style={styles.clientesGuardados}>
+                        <Text style={styles.clientesGuardadosTitulo}>Clientes guardados</Text>
+                        <View style={styles.filaClientes}>
+                            {clientesGuardados.map((nombre) => (
+                                <TouchableOpacity
+                                    key={claveCliente(nombre)}
+                                    activeOpacity={0.7}
+                                    style={[
+                                        styles.chipCliente,
+                                        claveCliente(cliente) === claveCliente(nombre) && styles.chipClienteActivo,
+                                    ]}
+                                    onPress={() => setCliente(nombre)}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.chipClienteTexto,
+                                            claveCliente(cliente) === claveCliente(nombre) && styles.chipClienteTextoActivo,
+                                        ]}
+                                    >
+                                        {nombre}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    </View>
+                ) : null}
 
                 <Text style={estilosComunes.etiquetaInput}>Descripción (opcional)</Text>
                 <TextInput style={estilosComunes.input} value={descripcion} onChangeText={setDescripcion} placeholder="Ej. Ventana" />
@@ -397,6 +432,41 @@ const styles = StyleSheet.create({
         color: colores.textoSuave,
     },
     chipTextoActivo: {
+        color: colores.primarioOscuro,
+        fontWeight: '700',
+    },
+    clientesGuardados: {
+        marginBottom: 12,
+    },
+    clientesGuardadosTitulo: {
+        fontSize: 12,
+        fontWeight: '600',
+        color: colores.textoSuave,
+        marginBottom: 6,
+    },
+    filaClientes: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    chipCliente: {
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderRadius: 16,
+        backgroundColor: colores.fondo,
+        borderWidth: 1,
+        borderColor: colores.borde,
+        marginRight: 8,
+        marginBottom: 8,
+    },
+    chipClienteActivo: {
+        backgroundColor: colores.primarioClaro,
+        borderColor: colores.primario,
+    },
+    chipClienteTexto: {
+        fontSize: 13,
+        color: colores.texto,
+    },
+    chipClienteTextoActivo: {
         color: colores.primarioOscuro,
         fontWeight: '700',
     },

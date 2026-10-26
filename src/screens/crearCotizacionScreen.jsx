@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { CabeceraVolver } from '../components/cabecera';
 import { ContenedorScroll } from '../components/contenedorScroll';
@@ -7,8 +7,9 @@ import { colores } from '../theme/colores';
 import { estilosComunes } from '../theme/estilosComunes';
 import { calcularCotizacionVentana } from '../utils/cotizacionGrupal';
 import { formatearUsd } from '../data/datosGrupo';
+import { claveCliente } from '../utils/clientes';
 
-export default function CrearCotizacionScreen({ onVolver, onGuardar }) {
+export default function CrearCotizacionScreen({ clientesGuardados = [], onVolver, onGuardar }) {
     const [cliente, setCliente] = useState('María Zambrano');
     const [nombreTrabajo, setNombreTrabajo] = useState('Ventanas de aluminio');
     const [ancho, setAncho] = useState('1,20');
@@ -66,7 +67,35 @@ export default function CrearCotizacionScreen({ onVolver, onGuardar }) {
             <ContenedorScroll>
                 <Seccion titulo="¿Para quién es?">
                     <Campo label="Nombre del cliente" value={cliente} onChangeText={setCliente} />
-                    <Text style={styles.ayuda}>Solo escribe su nombre. No necesitas registrarlo.</Text>
+                    {clientesGuardados.length > 0 ? (
+                        <View style={styles.clientesGuardados}>
+                            <Text style={styles.clientesGuardadosTitulo}>Clientes guardados</Text>
+                            <View style={styles.filaClientes}>
+                                {clientesGuardados.map((nombre) => (
+                                    <TouchableOpacity
+                                        key={claveCliente(nombre)}
+                                        activeOpacity={0.7}
+                                        style={[
+                                            styles.chipCliente,
+                                            claveCliente(cliente) === claveCliente(nombre) && styles.chipClienteActivo,
+                                        ]}
+                                        onPress={() => setCliente(nombre)}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles.chipClienteTexto,
+                                                claveCliente(cliente) === claveCliente(nombre) &&
+                                                    styles.chipClienteTextoActivo,
+                                            ]}
+                                        >
+                                            {nombre}
+                                        </Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                        </View>
+                    ) : null}
+                    <Text style={styles.ayuda}>Elige un cliente guardado o escribe uno nuevo.</Text>
                     <Campo label="Nombre del trabajo" value={nombreTrabajo} onChangeText={setNombreTrabajo} />
                 </Seccion>
 
@@ -181,6 +210,25 @@ const styles = StyleSheet.create({
         color: colores.texto,
     },
     ayuda: { fontSize: 13, color: colores.textoSuave, lineHeight: 19 },
+    clientesGuardados: { gap: 6 },
+    clientesGuardadosTitulo: { fontSize: 13, fontWeight: '600', color: colores.textoSuave },
+    filaClientes: { flexDirection: 'row', flexWrap: 'wrap' },
+    chipCliente: {
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderRadius: 16,
+        backgroundColor: colores.fondo,
+        borderWidth: 1,
+        borderColor: colores.borde,
+        marginRight: 8,
+        marginBottom: 8,
+    },
+    chipClienteActivo: {
+        backgroundColor: colores.primarioClaro,
+        borderColor: colores.primario,
+    },
+    chipClienteTexto: { fontSize: 13, color: colores.texto },
+    chipClienteTextoActivo: { color: colores.primarioOscuro, fontWeight: '700' },
     miniTitulo: { fontSize: 13, fontWeight: '600', color: colores.textoSuave, letterSpacing: 0.3 },
     concepto: { flex: 1, fontSize: 15, color: colores.textoSuave },
     valor: { fontSize: 15, color: colores.texto },

@@ -36,12 +36,14 @@ import {
 import { avisosIniciales } from './src/data/datosUsuario';
 import {
     calcularResumenTrabajos,
+    fechaIsoLocal,
     formatearRangoPeriodo,
     periodoReportePorDefecto,
 } from './src/utils/resumenFinanciero';
 import { configurarManejadorNotificaciones } from './src/utils/notificaciones';
 import { mostrarAviso } from './src/utils/feedback';
 import { ANCHO_MARCO_APP } from './src/theme/useLayout';
+import { clientesUnicosDesdeTrabajos } from './src/utils/clientes';
 import { persistirSesion, persistirTrabajos, restaurarDatosApp } from './src/utils/almacenamientoLocal';
 
 configurarManejadorNotificaciones();
@@ -77,6 +79,8 @@ export default function App() {
         () => trabajos.find((t) => t.id === trabajoSeleccionadoId) ?? null,
         [trabajos, trabajoSeleccionadoId],
     );
+
+    const clientesGuardados = useMemo(() => clientesUnicosDesdeTrabajos(trabajos), [trabajos]);
 
     useEffect(() => {
         let activo = true;
@@ -126,52 +130,57 @@ export default function App() {
     };
 
     const guardarCotizacion = (borrador) => {
-        const referencia = siguienteReferencia(trabajos);
-        const id = referencia.toLowerCase();
-        const nuevo = {
-            id,
-            referencia,
-            fecha: new Date().toISOString().slice(0, 10),
-            fechaLabel: fechaLabelHoy(),
-            historial: [
-                {
-                    fecha: fechaLabelHoy(),
-                    titulo: 'Cotización creada',
-                    detalle: `${referencia} · ${borrador.total.toLocaleString('es-EC', { minimumFractionDigits: 2 })}`,
-                },
-            ],
-            ...borrador,
-        };
-        setTrabajos((prev) => [nuevo, ...prev]);
-        setTrabajoSeleccionadoId(id);
+        let idNuevo = '';
+        setTrabajos((prev) => {
+            const referencia = siguienteReferencia(prev);
+            idNuevo = referencia.toLowerCase();
+            const nuevo = {
+                id: idNuevo,
+                referencia,
+                fecha: fechaIsoLocal(),
+                fechaLabel: fechaLabelHoy(),
+                historial: [
+                    {
+                        fecha: fechaLabelHoy(),
+                        titulo: 'Cotización creada',
+                        detalle: `${referencia} · ${borrador.total.toLocaleString('es-EC', { minimumFractionDigits: 2 })}`,
+                    },
+                ],
+                ...borrador,
+            };
+            return [nuevo, ...prev];
+        });
+        setTrabajoSeleccionadoId(idNuevo);
         setPantallaActual(RUTAS.COTIZACION_GUARDADA);
     };
 
     const agregarTrabajoDesdeSolicitud = (trabajoSimple) => {
-        const referencia = siguienteReferencia(trabajos);
-        const id = referencia.toLowerCase();
-        const nuevo = {
-            id,
-            referencia,
-            cliente: trabajoSimple.cliente,
-            descripcion: trabajoSimple.descripcion,
-            material: trabajoSimple.material,
-            total: trabajoSimple.total,
-            pagado: trabajoSimple.pagado ?? 0,
-            estado: trabajoSimple.estado || 'cotizado',
-            fecha: trabajoSimple.fecha || new Date().toISOString().slice(0, 10),
-            fechaLabel: fechaLabelHoy(),
-            ...(trabajoSimple.fotoReferencia ? { fotoReferencia: trabajoSimple.fotoReferencia } : {}),
-            ...(trabajoSimple.ubicacion ? { ubicacion: trabajoSimple.ubicacion } : {}),
-            historial: [
-                {
-                    fecha: fechaLabelHoy(),
-                    titulo: 'Cotización creada',
-                    detalle: `${referencia} · ${formatearUsd(trabajoSimple.total)}`,
-                },
-            ],
-        };
-        setTrabajos((prev) => [nuevo, ...prev]);
+        setTrabajos((prev) => {
+            const referencia = siguienteReferencia(prev);
+            const id = referencia.toLowerCase();
+            const nuevo = {
+                id,
+                referencia,
+                cliente: trabajoSimple.cliente,
+                descripcion: trabajoSimple.descripcion,
+                material: trabajoSimple.material,
+                total: trabajoSimple.total,
+                pagado: trabajoSimple.pagado ?? 0,
+                estado: trabajoSimple.estado || 'cotizado',
+                fecha: trabajoSimple.fecha || fechaIsoLocal(),
+                fechaLabel: fechaLabelHoy(),
+                ...(trabajoSimple.fotoReferencia ? { fotoReferencia: trabajoSimple.fotoReferencia } : {}),
+                ...(trabajoSimple.ubicacion ? { ubicacion: trabajoSimple.ubicacion } : {}),
+                historial: [
+                    {
+                        fecha: fechaLabelHoy(),
+                        titulo: 'Cotización creada',
+                        detalle: `${referencia} · ${formatearUsd(trabajoSimple.total)}`,
+                    },
+                ],
+            };
+            return [nuevo, ...prev];
+        });
     };
 
     const marcarComoInstalado = (id) => {
@@ -254,6 +263,7 @@ export default function App() {
             pantalla = (
                 <SolicitudScreen
                     trabajos={trabajos}
+                    clientesGuardados={clientesGuardados}
                     onAgregarTrabajo={agregarTrabajoDesdeSolicitud}
                     onActualizarTrabajo={actualizarTrabajo}
                     onAbrirPractica={() => abrirPractica(RUTAS.ACELEROMETRO, RUTAS.SOLICITUDES)}
@@ -302,6 +312,7 @@ export default function App() {
         case RUTAS.CREAR_COTIZACION:
             pantalla = (
                 <CrearCotizacionScreen
+                    clientesGuardados={clientesGuardados}
                     onVolver={() => setPantallaActual(RUTAS.INICIO)}
                     onGuardar={guardarCotizacion}
                 />
