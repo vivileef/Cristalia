@@ -51,6 +51,9 @@ export default function LoginScreen({ onLogin }) {
                     keyboardType="email-address"
                     autoCapitalize="none"
                     autoCorrect={false}
+                    autoComplete="email"
+                    textContentType="emailAddress"
+                    onSubmitEditing={iniciarSesion}
                 />
 
                 <Text style={styles.etiqueta}>Contraseña</Text>
@@ -64,6 +67,11 @@ export default function LoginScreen({ onLogin }) {
                     placeholder="Tu contraseña"
                     placeholderTextColor={colores.textoSuave}
                     secureTextEntry
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    autoComplete="password"
+                    textContentType="password"
+                    onSubmitEditing={iniciarSesion}
                 />
 
                 {mensajeError ? (
@@ -77,7 +85,7 @@ export default function LoginScreen({ onLogin }) {
                 </Pressable>
 
                 <Text style={styles.ayudaDemo}>
-                    Demo: {CREDENCIALES_DEMO.correo} · clave «{CREDENCIALES_DEMO.clave}»
+                    Demo: {CREDENCIALES_DEMO.correo} · clave {CREDENCIALES_DEMO.clave} (sin mayúsculas)
                 </Text>
             </View>
         </View>
