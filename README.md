@@ -18,7 +18,7 @@ npm run start:apk  # APK EAS + push remota
 | `npm run start:apk` | **Cristalia Equipo** instalada (push FCM) |
 | `npm run build:android` | Generar APK con EAS (`development`) |
 
-**APK oficial (Firebase):** [b048ac88 en Expo](https://expo.dev/accounts/velyevy/projects/cristalia-solicitudes/builds/b048ac88-d0cc-432d-a36f-fbc70f30f818)
+**APK oficial (1.0.1):** [d286ec26 en Expo](https://expo.dev/accounts/velyevy/projects/cristalia-solicitudes/builds/d286ec26-8039-461d-bf41-4a11ccf165d3)
 | `npm run web` | Navegador |
 
 **Demo:** correo `danna@live.uleam.edu.ec`, clave `paulina`.
