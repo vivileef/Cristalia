@@ -1,6 +1,6 @@
-# Cristalia Solicitudes
+# Cristalia Equipo (ULEAM)
 
-Aplicación móvil para talleres de vidriería y aluminio: cotizaciones, seguimiento de trabajos, reportes financieros y notificaciones. Desarrollada con **Expo** y **React Native** (proyecto grupal ULEAM + práctica individual de push).
+Aplicación móvil grupal para talleres de vidriería y aluminio: cotizaciones, seguimiento de trabajos, reportes financieros y notificaciones. Desarrollada con **Expo** y **React Native**. En el teléfono aparece como **Cristalia Equipo** (distinta de la práctica individual **Cristalia** / `cristalia-manta`).
 
 ## Características
 
@@ -59,7 +59,7 @@ La integración grupal dispara una **notificación local** solo después de un g
 Para push **remota** en Android (no disponible en Expo Go):
 
 1. Configurar `projectId` en `app.config.js` (`eas init`).
-2. Añadir `google-services.json` (Firebase, mismo `android.package`).
+2. Añadir `google-services.json` (Firebase, package `ec.edu.ejemplo.cristalia.equipo`).
 3. Credenciales FCM V1 en `eas credentials`.
 4. `eas build --platform android --profile development`
 

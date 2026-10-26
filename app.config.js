@@ -9,7 +9,8 @@ const tieneGoogleServices = fs.existsSync(googleServices);
 
 module.exports = {
     expo: {
-        name: 'Cristalia Solicitudes',
+        // Launcher: distinto de la app individual «Cristalia» (cristalia-manta).
+        name: 'Cristalia Equipo',
         slug: 'cristalia-solicitudes',
         owner: 'velyevy',
         version: '1.0.0',
@@ -20,7 +21,7 @@ module.exports = {
             supportsTablet: true,
         },
         android: {
-            package: 'ec.edu.ejemplo.cristalia.solicitudes',
+            package: 'ec.edu.ejemplo.cristalia.equipo',
             adaptiveIcon: {
                 backgroundColor: '#E6F4FE',
                 foregroundImage: './assets/android-icon-foreground.png',

@@ -7,7 +7,7 @@ const path = require('path');
 
 const projectDir = path.join(__dirname, '..');
 const keyPath = path.join(projectDir, 'fcm-v1-service-account.json');
-const packageName = 'ec.edu.ejemplo.cristalia.solicitudes';
+const packageName = 'ec.edu.ejemplo.cristalia.equipo';
 const projectFullName = '@velyevy/cristalia-solicitudes';
 
 const SessionManager = require('eas-cli/build/user/SessionManager').default;

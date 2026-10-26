@@ -7,10 +7,13 @@
 | Sesión Expo | Cuenta **velyevy** (`evelynfaubla@gmail.com`) |
 | `eas init` | Proyecto [@velyevy/cristalia-solicitudes](https://expo.dev/accounts/velyevy/projects/cristalia-solicitudes) |
 | `extra.eas.projectId` | `5547a1cb-1ce3-46fc-a3e6-54a71ba5f117` en `app.config.js` |
-| `android.package` | `ec.edu.ejemplo.cristalia.solicitudes` (igual que Firebase) |
-| `google-services.json` | Copiado en la **raíz local** (ignorado por Git) |
+| Nombre en Expo | **Cristalia Equipo** (`slug`: `cristalia-solicitudes`) |
+| `android.package` | `ec.edu.ejemplo.cristalia.equipo` (app Android **Cristalia Equipo ULEAM** en Firebase) |
+| `google-services.json` | Raíz local, package `…equipo` (ignorado por Git) |
 | Clave FCM V1 local | `fcm-v1-service-account.json` en raíz (ignorado por Git) |
-| FCM V1 en EAS | Subida y asignada a `ec.edu.ejemplo.cristalia.solicitudes` (`firebase-adminsdk-fbsvc@affirmations-5f860f35.iam.gserviceaccount.com`) |
+| FCM V1 en EAS | Tras cambiar package, ejecutar `npm run fcm:upload` para el id `…equipo` |
+
+Ver [FIREBASE-DOS-APPS.md](./FIREBASE-DOS-APPS.md) (individual vs grupal).
 
 ## Volver a subir FCM V1 (solo si cambias la clave)
 
