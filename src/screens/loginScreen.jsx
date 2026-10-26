@@ -83,10 +83,6 @@ export default function LoginScreen({ onLogin }) {
                 <Pressable style={estilosComunes.botonPrimario} onPress={iniciarSesion}>
                     <Text style={estilosComunes.textoBotonPrimario}>Iniciar sesión</Text>
                 </Pressable>
-
-                <Text style={styles.ayudaDemo}>
-                    Demo: {CREDENCIALES_DEMO.correo} · clave {CREDENCIALES_DEMO.clave} (sin mayúsculas)
-                </Text>
             </View>
         </View>
     );
