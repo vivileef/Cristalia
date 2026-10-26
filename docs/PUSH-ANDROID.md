@@ -18,7 +18,12 @@ Guía única para **notificaciones**, **arranque en el teléfono** y **APK**.
 |----------|------------|----------------|
 | Probar UI rápido | `npm start` | **Expo Go** → escanear QR |
 | App con icono propio (sin PC) | (solo build) | APK perfil **preview** |
-| Push remota FCM + desarrollo | `npm run start:apk` | APK perfil **development** + abrir **Cristalia Equipo** |
+| Push remota FCM + desarrollo | `npm run start:apk` (LAN) o `start:apk:tunnel` | APK **development** reciente + **Cristalia Equipo** |
+
+**APK con Firebase (instalar este):**  
+https://expo.dev/artifacts/eas/HUNU3SzBGL2nbmOa6o7ykYjci_RCjAn6VmTdJ7PoVEs.apk  
+
+Builds viejos en expo.dev (p. ej. `93f7a997`) pueden descargarse pero **no** sirven: sin `google-services.json` o package antiguo.
 
 ## Compilar APK (EAS)
 

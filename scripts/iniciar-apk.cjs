@@ -3,15 +3,20 @@ const path = require('path');
 
 const root = path.join(__dirname, '..');
 
-console.log('\nModo development build (APK Cristalia Equipo).');
-console.log('1) Instala el APK «development» desde expo.dev (icono Cristalia Equipo).');
-console.log('2) Abre ESA app en el teléfono (no Expo Go).');
-console.log('3) Si queda en blanco: misma Wi‑Fi que la PC o usa npm run start:apk:tunnel');
-console.log('No pulses s en Metro. Guía: docs/PUSH-ANDROID.md\n');
+console.log('\nDevelopment build (Cristalia Equipo). Abre esa app, no Expo Go.');
+console.log('Misma Wi‑Fi: npm run start:apk:lan | Red distinta: npm run start:apk:tunnel');
+console.log('APK actual (Firebase): docs/PUSH-ANDROID.md\n');
 
 const extra = process.argv.slice(2);
 const tieneTunnel = extra.some((a) => a === '--tunnel' || a === '--t');
-const args = ['expo', 'start', '--dev-client', ...(tieneTunnel ? [] : ['--lan']), ...extra];
+const filtered = extra.filter((a) => a !== '--lan');
+const args = [
+    'expo',
+    'start',
+    '--dev-client',
+    ...(tieneTunnel ? ['--tunnel'] : ['--lan']),
+    ...filtered.filter((a) => a !== '--tunnel' && a !== '--t'),
+];
 const result = spawnSync('npx', args, {
     stdio: 'inherit',
     cwd: root,
