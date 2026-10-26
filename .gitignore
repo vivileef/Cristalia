@@ -34,8 +34,7 @@ yarn-error.*
 # local env files
 .env*.local
 
-# Firebase / FCM (no subir a Git)
-google-services.json
+# Firebase / FCM (claves privadas; google-services.json sí va en el repo)
 *-firebase-adminsdk-*.json
 fcm-service-account.json
 fcm-v1-service-account.json
