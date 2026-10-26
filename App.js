@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -42,6 +42,7 @@ import {
 import { configurarManejadorNotificaciones } from './src/utils/notificaciones';
 import { mostrarAviso } from './src/utils/feedback';
 import { ANCHO_MARCO_APP } from './src/theme/useLayout';
+import { persistirSesion, persistirTrabajos, restaurarDatosApp } from './src/utils/almacenamientoLocal';
 
 configurarManejadorNotificaciones();
 
@@ -56,6 +57,7 @@ export default function App() {
         Inter_700Bold,
     });
 
+    const [datosLocalesListos, setDatosLocalesListos] = useState(false);
     const [usuarioAutenticado, setUsuarioAutenticado] = useState(false);
     const [pantallaActual, setPantallaActual] = useState(RUTAS.INICIO);
     const [trabajos, setTrabajos] = useState(trabajosIniciales);
@@ -76,6 +78,30 @@ export default function App() {
         [trabajos, trabajoSeleccionadoId],
     );
 
+    useEffect(() => {
+        let activo = true;
+        (async () => {
+            const { trabajos: guardados, sesionActiva } = await restaurarDatosApp();
+            if (!activo) return;
+            if (guardados) setTrabajos(guardados);
+            if (sesionActiva) setUsuarioAutenticado(true);
+            setDatosLocalesListos(true);
+        })();
+        return () => {
+            activo = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!datosLocalesListos) return;
+        persistirTrabajos(trabajos);
+    }, [trabajos, datosLocalesListos]);
+
+    const iniciarSesion = () => {
+        setUsuarioAutenticado(true);
+        persistirSesion(true);
+    };
+
     const actualizarTrabajo = (id, cambios) => {
         setTrabajos((prev) => prev.map((t) => (t.id === id ? { ...t, ...cambios } : t)));
     };
@@ -93,6 +119,7 @@ export default function App() {
 
     const cerrarSesion = () => {
         setUsuarioAutenticado(false);
+        persistirSesion(false);
         setPantallaActual(RUTAS.INICIO);
         setTrabajoSeleccionadoId(null);
         setUltimoPago(null);
@@ -198,7 +225,7 @@ export default function App() {
         setPantallaActual(RUTAS.PAGO_GUARDADO);
     };
 
-    if (!fontsLoaded) {
+    if (!fontsLoaded || !datosLocalesListos) {
         return (
             <View style={styles.cargando}>
                 <ActivityIndicator color={colores.marca} />
@@ -213,7 +240,7 @@ export default function App() {
                     <StatusBar barStyle="dark-content" backgroundColor={colores.fondoExterior} />
                     <SafeAreaView style={styles.areaContenido} edges={['top', 'left', 'right', 'bottom']}>
                         <View style={styles.marcoMovil}>
-                            <LoginScreen onLogin={() => setUsuarioAutenticado(true)} />
+                            <LoginScreen onLogin={iniciarSesion} />
                         </View>
                     </SafeAreaView>
                 </View>
