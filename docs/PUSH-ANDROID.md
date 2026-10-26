@@ -1,19 +1,17 @@
 # Push en Android (Cristalia Equipo)
 
-## APK oficial (EAS development)
-
-Build del proyecto para instalar en el teléfono y entregar en la práctica:
+## APK oficial (EAS development + Firebase)
 
 | | Enlace |
 |---|--------|
-| **Página del build** | https://expo.dev/accounts/velyevy/projects/cristalia-solicitudes/builds/93f7a997-749a-4269-bec3-927016dd7375 |
-| **Descarga directa APK** | https://expo.dev/artifacts/eas/V7DsWANn3WjLNEfSqgqhXtjbXqXXFsdIvLQdH8qbcDg.apk |
+| **Página del build** | https://expo.dev/accounts/velyevy/projects/cristalia-solicitudes/builds/b048ac88-d0cc-432d-a36f-fbc70f30f818 |
+| **Descarga directa APK** | https://expo.dev/artifacts/eas/FVY0auCjUzC9iYo884vMGhnBeSY9y7KoroxxcbaJ42Y.apk |
 
-Package: `ec.edu.ejemplo.cristalia.equipo`. Icono: **Cristalia Equipo**.
+Package: `ec.edu.ejemplo.cristalia.equipo`. Icono: **Cristalia Equipo**. Incluye `google-services.json` (FCM).
 
 ## Arrancar con Metro (dev client)
 
-1. Instala el APK de arriba.
+1. Instala el APK de arriba (desinstala versiones anteriores si hace falta).
 2. PC y celular en la **misma Wi‑Fi** → `npm run start:apk`  
    Red distinta → `npm run start:apk:tunnel`
 3. Abre **Cristalia Equipo** (no Expo Go). No pulses **`s`** en Metro.
@@ -28,16 +26,13 @@ Expo Go solo para pruebas rápidas: `npm start`.
 | Puerto 8081 ocupado | `npx kill-port 8081 8082` y vuelve a arrancar |
 | Caché Metro | `npm run reset:metro` |
 
-## Push (FCM)
+## Probar push (FCM)
 
-Ese build **93f7a997** se generó **sin** `google-services.json` embebido; **Registrar dispositivo** puede fallar con error de Firebase.
-
-Para practicar push remota, instala un build **development** más nuevo (mismo package) desde [Builds](https://expo.dev/accounts/velyevy/projects/cristalia-solicitudes/builds) — por ejemplo el que incluye Firebase — y usa el mismo `npm run start:apk`. El enlace de **entrega** sigue siendo el build `93f7a997`.
-
-1. `npm run start:apk`
-2. Login: `danna@live.uleam.edu.ec` / `paulina`
-3. **Push** → **Registrar dispositivo**
-4. Prueba remota: [expo.dev/notifications](https://expo.dev/notifications)
+1. `npm run start:apk` en la PC.
+2. Login: `danna@live.uleam.edu.ec` / `paulina`.
+3. **Push** → **Registrar dispositivo** (acepta permisos).
+4. Push remota: [expo.dev/notifications](https://expo.dev/notifications) con el token (app en segundo plano).
+5. Local: guardar una cotización en **Solicitudes**.
 
 ## Nuevo build (opcional)
 
